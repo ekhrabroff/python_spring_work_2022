@@ -5,8 +5,12 @@ a = int(input())
 b = int(input())
 c = int(input())
 
-buf = b
-b = a
-a = c
-c = buf
+a1 = a
+b1 = b
+c1 = c
+
+b = a1
+c = b1
+a = c1
+
 print(a,b,c)
