@@ -46,7 +46,7 @@ print("У вас есть 10 попыток. За неудачную попыт�
 
 success = 0
 attempts = 10                           # количество попыток
-count_in = 0                            # количество вхождений буквы в слово
+count_in = 0
 while success < len(words[question]):   # выполняем цикл пока слово не будет угадно полностью
         if attempts == 0:
                 break
@@ -58,7 +58,7 @@ while success < len(words[question]):   # выполняем цикл пока �
                 print("Вы ввели неверную букву, у вас осталось", attempts, "попыток")
 
         elif words[question].count(answer) >= 2: # если в слове имеется более 2-х повторяющихся букв
-                if answer not in mask:
+                if answer not in mask:           # проверяем была ли введенная буква угадана ранее
                         for i in words[question]:
                                 count_in = count_in + 1
                                 if i == answer:
@@ -69,7 +69,7 @@ while success < len(words[question]):   # выполняем цикл пока �
                         print(mask)
                         continue
         else:
-                if answer not in mask:
+                if answer not in mask:          # проверяем была ли введенная буква угадана ранее
                         for i in words[question]:
                                 if i == answer:
                                         mask[words[question].index(i)] = answer
