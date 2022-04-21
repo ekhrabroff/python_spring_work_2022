@@ -35,27 +35,55 @@ import random
 question = random.randint(0,len(words)-1)
 print(desc[question])
 
-word = []
-word_pattern = ""
-counter = 0
+mask = []
+
+
 for i in words[question]:
-        word.append("▒")
+        mask.append("▒") # выводим шаблон
 print("Слово состоит из",len(words[question]),"букв")
-print(word)
+print(mask)
 print("У вас есть 10 попыток. За неудачную попытку начисляется штрафной бал. Игра продолжается до 10 штрафных баллов")
 
-while counter != 10:
+success = 0
+attempts = 10                           # количество попыток
+count_in = 0                            # количество вхождений буквы в слово
+while success < len(words[question]):   # выполняем цикл пока слово не будет угадно полностью
+        if attempts == 0:
+                break
+
         answer = input("Введите букву: ")
 
-        for i in words[question]:
-                if answer in words[question]:
-                        word[counter] = answer
-                        print("Угадали! Введите следующую букву ")
-                        counter = counter + 1;
-                        break
-                else:
-                        print("Вы ввели неверную букву, у вас осталось",10-counter,"попыток")
-                        break
+        if words[question].count(answer) == 0: # если введена неправильная буква
+                attempts = attempts - 1
+                print("Вы ввели неверную букву, у вас осталось", attempts, "попыток")
 
-        print(word)
+        elif words[question].count(answer) >= 2: # если в слове имеется более 2-х повторяющихся букв
+                if answer not in mask:
+                        for i in words[question]:
+                                count_in = count_in + 1
+                                if i == answer:
+                                        mask[count_in-1] = i
+                        success = success + int(words[question].count(answer)) # увеличиваем счетчик угаданных букв
+                        print(mask)
+                else:                           # если буква была угадана ранее счетчик угаданных букв не изменяем
+                        print(mask)
+                        continue
+        else:
+                if answer not in mask:
+                        for i in words[question]:
+                                if i == answer:
+                                        mask[words[question].index(i)] = answer
+                        print(mask)
+                        success = success + 1
+                else:
+                        print(mask)
+                        continue
+
+if success == len(words[question]) and "▒" not in mask:
+        print("Вы выйграли, поздравляю!")
+else:
+        print("Вы израсходовали 10 попыток. Удачи в следующий раз")
+
+
+
 
