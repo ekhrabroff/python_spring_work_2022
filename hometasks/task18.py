@@ -22,8 +22,16 @@ while count != 6 ** 2:
             a += 1
             b = 1
     count += 1
-    print('комбинация', mass[count-1], 'сумма', summ, 'эллемент', str(count), 'в списке кортежей', mass)
-print('возможных комбинаций:',len(mass))
+
+new = []
+count = 2
+while count < 13:
+    for i in mass:
+        if sum(i) == count:
+            new.append(i)
+    print('сумма',count,new)
+    new.clear()
+    count += 1
 
 
 

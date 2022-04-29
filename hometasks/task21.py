@@ -35,7 +35,7 @@ for key,value in page.items():
 
 
 string = ''.join(mass)
-f = open('../../hometasks/index.html', 'w', encoding="UTF8")
+f = open('index.html', 'w', encoding="UTF8")
 string = string[2:]
 f.write(string)
 print(string)
