@@ -19,8 +19,7 @@ for i in s:
         res += i
         continue
     elif res != '':
-        s = s.replace(res, latin[
-            int(res) - 1])  # почему выдает неккоректный результат на числе 15, если оно оно идет третим в строке?
+        s = s.replace(res, latin[int(res) - 1]) # почему выдает неккоректный результат на числе 15, если оно оно идет третим в строке?
     elif i.isdigit() == False:
         res = ''
         continue
