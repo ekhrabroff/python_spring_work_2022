@@ -8,17 +8,6 @@
 
 latin = "abcdefghijklmnopqrstuvwxyz"
 
-
-def to_digit(num):
-    if num.isdigit and num <= len(latin):
-        if num != "0":
-            return latin[int(num)]
-        else:
-            return " "
-    else:
-        return num
-
-
 s = input("Введите числа для замены на буквы: ")
 res = ''
 count = 0
