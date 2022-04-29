@@ -1,19 +1,42 @@
-lat = "abcdefghijklmnopqrstuvwxyz"
-text = input('Введите строку: ')
-s = ''
-i = 0
-text_nev = text
-while i < len(text):
-    a = text[i]
-    while '0' <= a <= '9':
-        s += a
-        i += 1
-        if i < len(text):
-            a = text[i]
+# todo: Числа в буквы
+# Замените числа, написанные через пробел, на буквы. Не числа не изменять.
+
+# Пример.
+# Input	                            Output
+# 8 5 12 12 15	                    hello
+# 8 5 12 12 15 , 0 23 15 18 12 4 !	hello, world!
+
+latin = "abcdefghijklmnopqrstuvwxyz"
+
+
+def to_digit(num):
+    if num.isdigit and num <= len(latin):
+        if num != "0":
+            return latin[int(num)]
         else:
-            break
-    i += 1
-    if s != '':
-        text_nev = text_nev.replace(s, lat[int(s)-1])
-        s = ''
-print(text_nev)
+            return " "
+    else:
+        return num
+
+
+s = input("Введите числа для замены на буквы: ")
+res = ''
+count = 0
+
+for i in s:
+    if i.isdigit():
+        if i == '0':
+            s = s.replace(i, "")
+        res += i
+        continue
+    elif res != '':
+        s = s.replace(res, latin[
+            int(res) - 1])  # почему выдает неккоректный результат на числе 15, если оно оно идет третим в строке?
+    elif i.isdigit() == False:
+        res = ''
+        continue
+    res = ''
+print(s)
+
+
+
