@@ -9,21 +9,22 @@
 latin = "abcdefghijklmnopqrstuvwxyz"
 
 s = input("Введите числа для замены на буквы: ")
-res = ''
+obj = ''
 count = 0
 
 for i in s:
     if i.isdigit():
         if i == '0':
             s = s.replace(i, "")
-        res += i
+        obj += ''.join(i)
         continue
-    elif res != '':
-        s = s.replace(res, latin[int(res) - 1]) # почему выдает неккоректный результат на числе 15, если оно оно идет третим в строке?
+    elif obj != '':
+        print(obj, '-', latin[int(obj) - 1]) # раскоменти для вывода на экран
+        s = s.replace(obj, latin[int(obj) - 1]) # почему выдает неккоректный результат на числе 15, если оно оно идет третим в строке?
     elif i.isdigit() == False:
-        res = ''
+        obj = ''
         continue
-    res = ''
+    obj = ''
 print(s)
 
 

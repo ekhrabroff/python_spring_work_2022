@@ -14,12 +14,12 @@ s = s.lower()
 for i in s:
     if i.isalpha():
         if s.count(i) < 2:
-            out += i
+            out += ''.join(i)
         else:
             if i in out:
                 continue
             else:
-                out += i
+                out += ''.join(i)
     else:
         continue
             
