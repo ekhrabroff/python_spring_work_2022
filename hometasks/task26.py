@@ -19,60 +19,111 @@
 
 import random, pickle
 
+saved_games = [] # Список сохраненных игр
 
 obj = { 'num':random.randint(0, 100),
-        'res' : 0,
-        'attemp': 10,
-        'count' : 0
-        'dump_input':0}
+        'res' : 0,      # текущий ответ
+        'attemp': 10,   # количество попыток
+        'count' : 0,    # Текущая попытка
+        'answers' : [], # Введенные ответы
+        'save_name':0}  # Имя игры для сохранения
 
-def save_game(obj, file):
+def save_game(object, file):
+        global obj
+        obj['save_name'] = input('Введите название для сохранения: ')
         with open(file,'ab') as f:
-                pickle.dump(obj,f)
+                pickle.dump(object,f)
+        print('Игра сохранена. Продолжаем играть')
+
+def load_game(object:list, file):
+        global obj
+        with open(file, "rb") as f:
+                while True:
+                        try:
+                                object.append(pickle.load(f))
+                        except EOFError:
+                                break
+        for i in object:
+                print(str((object.index(i) + 1)) + '.', object[object.index(i)] ['save_name'])
+
+        num = int(input('Введите номер сохраненной игры для загрузки: '))
+        if 0 <= (num-1) <=  (len(object) - 1):
+                obj = object[num-1]
+        else:
+                print('Введен неверный номер сохраненной игры. Загружено последнее сохранение')
+                obj = object[len(object) - 1]
+
+        print('Загружена игра:', obj['save_name'])
+        print('Использовано попыток:', len(obj['answers']))
+        print('Осталось попыток:', obj['attemp'] - obj['count'])
+        answers = ''
+        #obj['answers'].pop()
+        for i in obj['answers']:
+                answers += i + ' '
+        print('Ранее введенные ответы:', answers)
+
 
 def game_start():
         global obj
         choice = 0
+        print('Для подсказки нажмите клавишу H')
         while obj['count'] != obj['attemp']:
                 obj['res'] = input('Введите число: ')
+
+                if obj['res'].isdigit():
+                        obj['answers'].append(obj['res'])
                 if obj['res'] == str(obj['num']):
                         print('Поздравляю! Вы угадали с', obj['count'] + 1, 'попытки')
                         break
                 elif obj['res'] == 'S' or obj['res'] == 's':
                         print('1. Продолжить')
                         print('2. Сохранить игру')
-
-
                         choice = input('Выберите действие: ')
                         if choice == '1':
                                 print('Продолжаем игру')
                                 continue
                         elif choice == '2':
                                 save_game(obj, 'game_dump.pkl')
-
-                                print('Игра сохранена. Продолжаем играть')
                                 continue
                         else:
                                 print('Вы ввели неверное значение. Продолжаем игру')
                                 continue
+                elif obj['res'] == 'H' or obj['res'] == 'h':
+                        print('Загаданное число:', obj['num'])
+                        continue
 
                 else:
                         if obj['res'].isdigit():
                                 obj['count'] += 1
-                                if obj['res'] > str(obj['num']):
+                                if int(obj['res']) > obj['num']:
                                         print('Загаданное число меньше чем', obj['res'])
                                 else:
                                         print('Загаданное число больше чем', obj['res'])
                                 print('У вас осталось', obj['attemp'] - obj['count'], 'попыток')
                         else:
-                                print('Введите числовое значение или нажмите клавишу S')
+                                print('Введите числовое значение или нажмите клавишу S или H')
                                 continue
 
-with open('game_dump.pkl', 'r+b') as f:
-        obj1 = pickle.load(f)
-print(obj1)
-print(obj['num'])
-game_start()
+
+print("""
+Поиграем в игру "отгадай число от 0 до 100"
+
+1. Новая игра
+2. Восстановить игру
+""")
+
+choice = input('Выберите действие: ')
+
+if choice == '1':
+        game_start()
+elif choice == '2':
+        load_game(saved_games, 'game_dump.pkl')
+        game_start()
+else:
+        print("Введен некорректный ответ")
+
+#print(obj['num'])
+
 
 
 
