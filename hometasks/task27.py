@@ -21,7 +21,7 @@ import random, pickle
 
 saved_games = [] # Список сохраненных игр
 
-obj = { 'num':random.randint(0, 100),
+obj = { 'num':random.randint(0, 100), # Случайное число
         'res' : 0,      # текущий ответ
         'attemp': 10,   # количество попыток
         'count' : 0,    # Текущая попытка
@@ -35,29 +35,33 @@ def save_game(object, file):
                 pickle.dump(object,f)
         print('Игра сохранена. Продолжаем играть')
 
-def load_game(object:list, file):
+def load_game(object: list, file):
         global obj
-        with open(file, "rb") as f:
-                while True:
-                        try:
-                                object.append(pickle.load(f))
-                        except EOFError:
-                                break
-        for i in object:
+        try:
+                with open(file, "rb") as f:
+                        while True:              # читаем pkl файл до конца
+                                try:
+                                        object.append(pickle.load(f)) # добавляем сохранение в список
+                                except EOFError: # исключение конец файла
+                                        break
+        except FileNotFoundError: # исколючение - если файл не найден
+                print('Сохраненные игры отсутствуют. Начинаем новую игру')
+                return -1
+
+        for i in object: # выводим на экран список всех сохраненных игр
                 print(str((object.index(i) + 1)) + '.', object[object.index(i)] ['save_name'])
 
         num = int(input('Введите номер сохраненной игры для загрузки: '))
-        if 0 <= (num-1) <=  (len(object) - 1):
+        if 0 <= num <= len(object):
                 obj = object[num-1]
         else:
                 print('Введен неверный номер сохраненной игры. Загружено последнее сохранение')
                 obj = object[len(object) - 1]
 
         print('Загружена игра:', obj['save_name'])
-        print('Использовано попыток:', len(obj['answers']))
+        print('Использовано попыток:', obj['count'])
         print('Осталось попыток:', obj['attemp'] - obj['count'])
         answers = ''
-        #obj['answers'].pop()
         for i in obj['answers']:
                 answers += i + ' '
         print('Ранее введенные ответы:', answers)
@@ -99,10 +103,15 @@ def game_start():
                                         print('Загаданное число меньше чем', obj['res'])
                                 else:
                                         print('Загаданное число больше чем', obj['res'])
-                                print('У вас осталось', obj['attemp'] - obj['count'], 'попыток')
+                                if obj['count'] == obj['attemp']:
+                                        print('Вы израсходовали все попытки. Game over!')
+                                else:
+                                        print('У вас осталось', obj['attemp'] - obj['count'], 'попыток')
+
                         else:
                                 print('Введите числовое значение или нажмите клавишу S или H')
                                 continue
+
 
 
 print("""
@@ -121,8 +130,6 @@ elif choice == '2':
         game_start()
 else:
         print("Введен некорректный ответ")
-
-#print(obj['num'])
 
 
 
