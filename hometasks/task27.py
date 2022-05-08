@@ -74,8 +74,10 @@ def game_start():
         while obj['count'] != obj['attemp']:
                 obj['res'] = input('Введите число: ')
 
-                if obj['res'].isdigit():
-                        obj['answers'].append(obj['res'])
+                if obj['res'] in obj['answers']:
+                        print('Вы уже вводили это число')
+                        continue
+
                 if obj['res'] == str(obj['num']):
                         print('Поздравляю! Вы угадали с', obj['count'] + 1, 'попытки')
                         break
@@ -97,7 +99,8 @@ def game_start():
                         continue
 
                 else:
-                        if obj['res'].isdigit():
+                        if obj['res'].isdigit() :
+                                obj['answers'].append(obj['res'])
                                 obj['count'] += 1
                                 if int(obj['res']) > obj['num']:
                                         print('Загаданное число меньше чем', obj['res'])
