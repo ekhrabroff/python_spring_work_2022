@@ -21,12 +21,12 @@ import random, pickle
 
 saved_games = [] # Список сохраненных игр
 
-obj = { 'num':random.randint(0, 100), # Случайное число
-        'res' : 0,      # текущий ответ
+obj = { 'num': random.randint(0, 100), # Случайное число
+        'res': 0,      # текущий ответ
         'attemp': 10,   # количество попыток
-        'count' : 0,    # Текущая попытка
-        'answers' : [], # Введенные ответы
-        'save_name':0}  # Имя игры для сохранения
+        'count': 0,    # Текущая попытка
+        'answers': [], # Введенные ответы
+        'save_name': 0}  # Имя игры для сохранения
 
 def save_game(object, file):
         global obj
