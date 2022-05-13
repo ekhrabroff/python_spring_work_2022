@@ -10,48 +10,65 @@
 
 from datetime import datetime
 
-mass = [1, -5, 6, 3, 101, 36, 37, 38, 39, 1]
-log = {}
+mass = [1, -5, 6, 3, 101, 36]
+log = {}  # словарь для сохранения вызванных функций и кол-ва вызовов функции {'имя_функции': кол-во вызовов}
+
 
 def decoraror_func(func):
     def wrapper(*args):
-        #count = 0
         global log
-        if func.__name__ in log.keys():
-
-            log[func.__name__] += 1
+        if func.__name__ in log.keys():  # func.__name__ - возвращает название переданной функции
+            log[func.__name__] += 1  # если функция вызывалась ранее увеличиваем счетчик кол-ва вызовов в словаре
         else:
-            log[func.__name__] = 1
+            log[func.__name__] = 1  # если функция вызвана впервые добавляем ее название и кол-во вызовов в словарь
+
         func(*args)
-        with open('debug.log','wt') as f:
-            for i in log.keys():
-                f.write(f'{i} {log[i]} {datetime.today()}\n')
+
+        return func(*args)
+
     return wrapper
 
-@decoraror_func
 
-def mass_sorted(mass):
-    mass = mass.sort()
+def save_log(log: dict):  # функция сохранения лога в файл
+    now = datetime.now()
+    with open('debug.log', 'at') as f:
+        for i in log.keys():
+            print(f'{i}, {log[i]}, {now.strftime("%d.%m.%Y, %H:%M:%S")}')
+            f.write(f'{i}, {log[i]}, {now.strftime("%d.%m.%Y, %H:%M:%S")}\n')
 
-mass_sorted(mass)
 
+@decoraror_func  # декорируем render
 def render(text):
     text = text.upper()
     return text
 
-wd = decoraror_func(render)
-wd('hi')
+
+@decoraror_func  # декорируем mass_sorted
+def mass_sorted(mass):
+    mass = mass.sort()
+
+
+@decoraror_func  # декорируем summ
+def summ(*summ):
+    s = 0
+    for i in summ:
+        s = s + int(i)
+    return s
+
+
+render('Hi')
+
+print(f'Сумма равна {summ(10, 15, 18, 19, 20)}')
 
 mass_sorted(mass)
 
-wd('privet')
-wd('ooops')
-wd('boroda')
-mass_sorted(mass)
-wd('Once')
+mass_sorted(['7, -1, 10, 3'])
 
-wd1 = decoraror_func(print)
-wd1(wd, render('Wow'), 'Hello')
-mass_sorted([14,15,-1])
-wd1('Text1', wd, wd1, mass_sorted(mass))
+summ(5, 5)
+summ(100, 1000, 350, -8, 60)
+
+print(render('hello world'))
+render('how are you')
+
+save_log(log)
 
