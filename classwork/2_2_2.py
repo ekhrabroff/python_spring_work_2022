@@ -17,16 +17,22 @@ def load_matrix(filename):
     with open(filename, 'rt') as f:
         "читаем файл"
         mass = f.read()
+        # print(f'mass =\n {mass}')
         "убираем \n из массива"
         mass = mass.split('\n')
+        # print(f'mass = {mass}')
         "превращаем массив в строку с числами для того чтобы посчитать общее кол-во чисел в матрице"
         nums = ''.join([i + ' ' for i in mass])
+        # print(f'nums = {nums}')
         "удаляем пробел в конце строки"
         nums = nums.rstrip(' ')
+        # print(f'nums = {nums}')
         "переводим числа в массиве из str в int"
         nums = [int(i) for i in nums.split(' ')]
+        # print(f'nums = {nums}')
         "получаем список списков целых чисел"
         matrix = [[int(x) for x in i.split(' ')] for i in mass]
+        # print(f'matrix = {matrix}')
         "получаем список списков целых чисел если выполняется условие задачи. Если не выполняется получаем []"
         result = [i for i in matrix if len(i) == len(nums) / len(matrix)]
         "for debug"
