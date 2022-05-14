@@ -34,6 +34,6 @@ def load_matrix(filename):
         # print(f'nums = {nums}')
         # print(f'matrix = {matrix}')
         " Если условие задачи выполняется возвращаем список списков целых чисел. Если нет возвращаем False "
-    return result if len(result) != 0 else False
+    return result if len(result) > 0 else False
 
 print(load_matrix('matrix.txt'))
