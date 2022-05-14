@@ -29,7 +29,7 @@ def load_matrix(filename):
         matrix = [[int(x) for x in i.split(' ')] for i in mass]
         "получаем список списков целых чисел если выполняется условие задачи. Если не выполняется получаем []"
         result = [i for i in matrix if len(i) == len(nums) / len(matrix)]
-
+        "for debug"
         # print(f'mass = {mass}')
         # print(f'nums = {nums}')
         # print(f'matrix = {matrix}')
