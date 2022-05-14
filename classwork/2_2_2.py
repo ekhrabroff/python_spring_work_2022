@@ -15,11 +15,28 @@
 
 def load_matrix(filename):
     with open(filename, 'rt') as f:
-        mass = f.readlines()
-        mass[0] = mass[0].rstrip('\n')
-        mass[1] = mass[1].rstrip('\n')
+        "читаем файл"
+        mass = f.read()
+        "убираем \n из массива"
+        mass = mass.split('\n')
+        "превращаем массив в строку с числами (тип чисел str не int)"
+        nums = ''.join([i + ' ' for i in mass])
+        "удаляем пробел в конце строки"
+        nums = nums.rstrip(' ')
+        "переводим числа в массиве из str в int"
+        nums = [int(i) for i in nums.split(' ')]
+        "получаем список списков целых чисел"
+        matrix = [[int(x) for x in i.split(' ')] for i in mass]
+        "получаем список списков целых чисел если выполняется условие задачи. Если не выполняется получаем []"
+        result = [i for i in matrix if len(i) == len(nums) / len(matrix)]
 
-    return [[i] for i in mass if len(i) == (len((mass[0]) + len(mass[1]) + len(mass[2])) / 3) ]
+        # print(f'mass = {mass}')
+        # print(f'nums = {nums}')
+        # print(f'matrix = {matrix}')
+
+
+        " Если условие задачи выполняется возвращаем список списков целых чисел. Если нет возвращаем False "
+    return result if len(result) != 0 else False
 
 
 print(load_matrix('matrix.txt'))
