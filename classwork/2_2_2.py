@@ -19,7 +19,7 @@ def load_matrix(filename):
         mass = f.read()
         "убираем \n из массива"
         mass = mass.split('\n')
-        "превращаем массив в строку с числами (тип чисел str не int)"
+        "превращаем массив в строку с числами для того чтобы посчитать общее кол-во чисел в матрице"
         nums = ''.join([i + ' ' for i in mass])
         "удаляем пробел в конце строки"
         nums = nums.rstrip(' ')
@@ -33,10 +33,7 @@ def load_matrix(filename):
         # print(f'mass = {mass}')
         # print(f'nums = {nums}')
         # print(f'matrix = {matrix}')
-
-
         " Если условие задачи выполняется возвращаем список списков целых чисел. Если нет возвращаем False "
     return result if len(result) != 0 else False
-
 
 print(load_matrix('matrix.txt'))
