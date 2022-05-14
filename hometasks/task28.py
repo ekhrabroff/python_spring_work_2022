@@ -15,17 +15,14 @@ log = {}  # словарь для сохранения вызванных фун
 
 
 def decoraror_func(func):
-    def wrapper(*args):
+    def wrapper(*args, **kwargs):
         global log
         if func.__name__ in log.keys():  # func.__name__ - возвращает название переданной функции
             log[func.__name__] += 1  # если функция вызывалась ранее увеличиваем счетчик кол-ва вызовов в словаре
         else:
             log[func.__name__] = 1  # если функция вызвана впервые добавляем ее название и кол-во вызовов в словарь
-
-        func(*args)
-
-        return func(*args)
-
+        func(*args, **kwargs)
+        return func(*args,  **kwargs)
     return wrapper
 
 
