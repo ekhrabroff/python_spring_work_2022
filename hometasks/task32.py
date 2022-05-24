@@ -12,7 +12,7 @@ import psycopg
 
 with psycopg.connect('dbname=testsystem user=testsystem password=test12345') as conn:
     with conn.cursor() as cur:
-        создаем таблицы
+        # создаем таблицы
         cur.execute("""
             CREATE TABLE "group" (
             "id_group" SERIAL PRIMARY KEY,
