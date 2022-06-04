@@ -45,7 +45,10 @@ def auth():
                 cur.execute(f"SELECT login, password FROM public.user WHERE login LIKE '{login}'")
                 hashed_pass = cur.fetchone()
                 if bcrypt.checkpw(passw.encode(), hashed_pass[1].encode()):
-                    cur.execute(f"SELECT name, surname FROM public.profile WHERE id_user = (SELECT id_user FROM public.user WHERE login LIKE '{login}')")
+                    cur.execute(f"""
+                    SELECT a.name, a.surname FROM public.profile a 
+                    JOIN public.user b ON a.id_user = b.id_user 
+                    WHERE b.login LIKE '{login}'""")
                     data = cur.fetchone()
                     if data != None:
                         print(f'Добро пожаловать {data[0]} {data[1]}!')
@@ -65,7 +68,7 @@ def auth():
 def registration():
     login = input('Введите логин: ')
 
-    if is_user_exist(login) == False or login != '':
+    if is_user_exist(login) == False and login != '':
 
         passw = input('Введите пароль: ')
         passw = bcrypt.hashpw(passw.encode(), bcrypt.gensalt())
@@ -99,8 +102,8 @@ def registration():
                     cur.execute(f"INSERT INTO public.group (name) VALUES ('{group}')")
                     # conn.commit()
 
-                cur.execute(f"""SELECT id_student FROM student 
-                       WHERE id_user = (SELECT id_user FROM public.user WHERE login LIKE '{login}') """)
+                cur.execute(f"""SELECT a.id_student FROM student a JOIN public.user b ON a.id_user = b.id_user
+                       WHERE b.login LIKE '{login}') """)
                 if cur.fetchone() == None:
                     cur.execute(f"""INSERT INTO public.student (id_group, name, surname, age, tel, id_user)
                            VALUES
