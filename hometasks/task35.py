@@ -7,7 +7,7 @@ class DB:
     __instance__ = None
 
     def __new__(cls, *args, **kwargs):
-        '''Singltone класс. Метод возвращает объект класса DB
+        '''Singltone. Метод возвращает объект класса DB
             и запрещает создание других экзмепляров класса'''
         if not cls.__instance__:
             cls.__instance__ = object.__new__(cls)
@@ -61,7 +61,7 @@ class Auth:
             email = input('Введите эл.почту: ')
             tel = input('Введите телефон: ')
             group = input('Введите группу: ')
-            return login, passw, name, surname, patronym, dt_birth, email, tel, group
+            return [login, passw, name, surname, patronym, dt_birth, email, tel, group]
 
         else:
             print('Логин пустой или такой пользователь уже существует. Введите другой логин')
@@ -88,16 +88,13 @@ class Auth:
                     else:
                         print(f'Профиль пользователя {login} не найден')
                         Auth.is_auth = False
-                        return
                 else:
                     print('Введен неверный пароль')
-                    return
                 Auth.is_auth = True
-                return
+
         else:
             print('Пользователь не найден')
             Auth.is_auth = False
-            return
 
     def logout(self):
         Auth.is_auth = False
@@ -154,14 +151,16 @@ class Profile:
                        '{self.name}', '{self.surname}', '{self.patronym}', '{self.dt_birth.strftime("%Y-%m-%d")}', '{self.tel}', '{self.email}',
                        (SELECT id_group FROM public.group WHERE name LIKE '{self.group}'))""")
 
-        except psycopg.errors.UniqueViolation as err:
-            print('Такой номер телефона уже есть в базе')
-            print(err)
+        except psycopg.errors.UniqueViolation:
+            print(f'Номер телефона {self.tel} уже есть в БД')
+            conn.rollback()
+            self.tel = input('Введите другой номер телефона: ')
+            return self.set_profile(conn)
 
         except psycopg.Error as err:
             print('Ошибка регистрации нового пользователя. Тип ошибки:', type(err))
             print(err)
-            # main()
+            conn.rollback()
 
         else:
             print(f"Пользователь {self.login} успешно зарегистрирован")
@@ -174,8 +173,8 @@ class Profile:
 
 conn = DB('testsystem', 'testsystem', 'test12345').get_connect()
 
-
 auth = Auth(conn)
-new = list(auth.registration())
+new = auth.registration()
 profile = Profile(new[0], new[1], new[2], new[3], new[4], new[5], new[6], new[7], new[8]).set_profile(conn)
+print(profile)
 conn.close()
